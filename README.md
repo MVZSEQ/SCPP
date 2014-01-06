@@ -18,7 +18,7 @@ Input is the raw libraries with the following naming convention:
 LIB1_ATCAGC_L006_R1_001.fasta.gz
 
 Output in a folder called "pre-clean" will be:
-LIB1_R1.fq
+<br>LIB1_R1.fq
 
 ****************************************************************
 2-scrubReads.pl: Removes adapters, contamination, and low complexity reads and merges overlapping reads
