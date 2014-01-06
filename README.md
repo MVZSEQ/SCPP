@@ -15,7 +15,7 @@ This pipeline is a combination of novel scripts and scripts from other pipelines
 Dependencies: fastqc (if evaluation is desired)
 
 Input is the raw libraries with the following naming convention: 
-LIB1_ATCAGC_L006_R1_001.fasta.gz
+<br>LIB1_ATCAGC_L006_R1_001.fasta.gz
 
 Output in a folder called "pre-clean" will be:
 <br>LIB1_R1.fq
@@ -26,16 +26,16 @@ Output in a folder called "pre-clean" will be:
 Dependencies: COPE, cutadapt, FLASH, fastQC, Bowtie2
 
 Input is reformated libraries:
-LIB1_R1.fq
-LIB1_R2.fq
+<br>LIB1_R1.fq
+<br>LIB1_R2.fq
 
 Output is the following .txt files:
-LIB1_1_final.txt (left reads)
-LIB1_2_final.txt (right reads)
-LIB1_u_final.txt (merged or unpaired reads)
-LIB1.contam.out
-LIB1.duplicates.out
-LIB1.lowComplexity.out
+<br>LIB1_1_final.txt (left reads)
+<br>LIB1_2_final.txt (right reads)
+<br>LIB1_u_final.txt (merged or unpaired reads)
+<br>LIB1.contam.out
+<br>LIB1.duplicates.out
+<br>LIB1.lowComplexity.out
 
 Note: If only single indexing (P7) leave out P5 column
 
@@ -45,13 +45,13 @@ Note: If only single indexing (P7) leave out P5 column
 Dependencies: ABySS, samtools
 
 Input are cleaned reads:
-LIB1_1_final.txt
-LIB1_2_final.txt
-LIB1_u_final.txt
+<br>LIB1_1_final.txt
+<br>LIB1_2_final.txt
+<br>LIB1_u_final.txt
 
 Output is ABySS output:
-LIB1_k61_5-contigs.fa
-(k61 being the kmer and 5 being the kmer coverage)
+<br>LIB1_k61_5-contigs.fa
+<br>(k61 being the kmer and 5 being the kmer coverage)
 
 ****************************************************************
 4-poolAssembly.py: Pools all the kmers and kmer coverages into one file/
@@ -59,10 +59,10 @@ LIB1_k61_5-contigs.fa
 Dependencies: none
 
 Input are ABySS assemblies:
-LIB1_k61_5-contigs.fa
+<br>LIB1_k61_5-contigs.fa
 
 Output:
-LIB1.fa
+<br>LIB1.fa
 
 ****************************************************************
 5-finalAssembly.pl: clusters contigs and assembles larger contigs.
@@ -70,16 +70,16 @@ LIB1.fa
 Dependencies: blat (v34), CAP3, cd-hit-est
 
 Input is the pooled assemblies:
-LIB1.fa
+<br>LIB1.fa
 
 Output:
-LIB1.fa.final (final output)
-LIB1.fa.original
-LIB1.fa.cl98a
-LIB1.fa.cl98b
-LIB1.fa.cl98b.clustered
-LIB1.fa.cl99a
-LIB1.fa.cl99b
+<br>LIB1.fa.final (final output)
+<br>LIB1.fa.original
+<br>LIB1.fa.cl98a
+<br>LIB1.fa.cl98b
+<br>LIB1.fa.cl98b.clustered
+<br>LIB1.fa.cl99a
+<br>LIB1.fa.cl99b
 
 ****************************************************************
 6-generateReferences.py: generates a reference for each library using its own contigs.
@@ -87,13 +87,13 @@ LIB1.fa.cl99b
 Dependencies: bowtie2, samtools
 
 Input:
-LIB1_1_final.txt
-LIB1.fa.final
-RefLoci.fa
+<br>LIB1_1_final.txt
+<br>LIB1.fa.final
+<br>RefLoci.fa
 
 Output:
-LIB1.fa
-LIB1_ref.report
+<br>LIB1.fa
+<br>LIB1_ref.report
 
 ****************************************************************
 7-alignment.py: Reads are aligned to the references using novoalign
@@ -101,15 +101,15 @@ LIB1_ref.report
 Dependencies: novoalign, samtools
 
 Input are cleaned reads and reference:
-LIB1_1_final.txt
-LIB1_2_final.txt
-LIB1_u_final.txt
-LIB1.fa
+<br>LIB1_1_final.txt
+<br>LIB1_2_final.txt
+<br>LIB1_u_final.txt
+<br>LIB1.fa
 
 Output:
-LIB1.sorted.bam
-LIB1.sorted.bam.bai
-LIB1.cov (only if coverage is desired)
+<br>LIB1.sorted.bam
+<br>LIB1.sorted.bam.bai
+<br>LIB1.cov (only if coverage is desired)
 
 ****************************************************************
 8-phaseHap.pl: Uses GATK to come up with haplotypes
@@ -117,13 +117,13 @@ LIB1.cov (only if coverage is desired)
 Dependencies: GATK, picard
 
 Input are alignments:
-LIB1.sorted.bam
-LIB1.sorted.bam.bai
-LIB1.fa (reference file)
+<br>LIB1.sorted.bam
+<br>LIB1.sorted.bam.bai
+<br>LIB1.fa (reference file)
 
 Output: 
-LIB1.final_hap1.txt
-LIB1.final_hap2.txt
+<br>LIB1.final_hap1.txt
+<br>LIB1.final_hap2.txt
 
 ****************************************************************
 9-hapTools.py: Has different functions to manipulate the haplotypes
@@ -134,13 +134,13 @@ Function: fixes the references so that each base is the majority of all the read
 Dependencies: samtools, assembly_evaluation.pl
 
 Input are alignments and references:
-LIB1.fa (reference file)
-LIB1.sorted.bam
+<br>LIB1.fa (reference file)
+<br>LIB1.sorted.bam
 LIB1.sorted.bam.bai
 
 Output:
-LIB1_fixed.fa
-LIB1_pos.txt
+<br>LIB1_fixed.fa
+<br>LIB1_pos.txt
 
 
 Command: consensus
@@ -149,12 +149,12 @@ Function: Creates a consensus sequences from the haplotypes. It is always prefer
 Dependecies: mafft
 
 Input:
-LIB1.final_hap1.txt
-LIB1.final_hap2.txt
+<br>LIB1.final_hap1.txt
+<br>LIB1.final_hap2.txt
 
 Output: 
-LIB1.fa (heterozygous consensus)
-LIB1.out (output information with indel and SNP info)
+<br>LIB1.fa (heterozygous consensus)
+<br>LIB1.out (output information with indel and SNP info)
 
 
 Command: combine
@@ -163,31 +163,31 @@ Function: Combines the heterozygous output of the 'consensus' function with the 
 Dependencies: none
 
 Input:
-LIB1.fa (heterozygous only)
+<br>LIB1.fa (heterozygous only)
 
 Output:
-LIB1.fa (combined)
+<br>LIB1.fa (combined)
 
 
 Command: rename
 Function: Renames the libraries if the name is not what the researcher desires.
 
 Input:
-LIB1.fa (combined or otherwise)
-ExtInfo.txt
+<br>LIB1.fa (combined or otherwise)
+<br>ExtInfo.txt
 
 Output:
-RENAME1.fa
+<br>RENAME1.fa
 
 
 Command: perLoc
 Function: Turns each library consensus file to files organized per locus rather than per library.
 
 Input:
-LIB1.fa (combined or RENAME1.fa)
+<br>LIB1.fa (combined or RENAME1.fa)
 
 Output:
-LOC1.fa
-LOC2.fa
-LOC3.fa
+<br>LOC1.fa
+<br>LOC2.fa
+<br>LOC3.fa
 
