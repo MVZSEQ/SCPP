@@ -24,75 +24,43 @@ ref = argparse.ArgumentParser(description='Recovers final assembled contigs that
 ref.add_argument('-f', dest='reads', type=str, help='directory of cleaned reads.')
 ref.add_argument('-r', dest='ref', type=str, help='fasta file of target sequences', required = True)
 ref.add_argument('-a', dest='assembly', type=str, help='directory of final assemblies (ends in .fasta.final)')
-ref.add_argument('-o', dest='outdir', type=str, help='output directory')
+ref.add_argument('-o', dest='out', type=str, help='output directory')
 ref.add_argument('-d', dest='readhead', type=str, help='beginning of the read header (ex. @M00384, @HWI, @HS) [@HWI]', default = '@HWI')
 ref.add_argument('-e', dest='evalue', type=str, help='e-value for BLAST search [1e-10]', default = '1e-10')
-ref.add_argument('-b', dest='infofile', type=str, help='library info file. Only use if batch processing is desired. Assumes standard SCPP directory nomenclature')
-ref.add_argument('-nu', dest='nuc', action="store_true", help='loci are all only nuclear loci (only if batch processing)')
-ref.add_argument('-mt', dest = 'mito', action="store_true", help='loci are all mitochondrial (only if batch processing)')
 
 if len(sys.argv) == 1:
     ref.print_help()
     sys.exit(1)
 args = ref.parse_args()
 
-if args.outdir.endswith('/'): pass
-else: args.outdir = args.outdir+'/'
-if args.infofile != None:
-    if args.dir != None or args.outdir != None or args.assembly != None: 
-        print 'If batch processing by info file is selected, flags -f, -o, and -a should not be activated.'
-        sys.exit()
-elif args.infofile == None:
-    if args.dir == None or args.outdir == None or args.assembly == None:
-        print 'If single directory proceessing is desired, flags -f, -o, and -a should ALL be assigned a path.'
-        sys.exit()
-
-if args.infofile: args.homedir = '/'.join(args.infofile.split('/')[:-1])
-if args.nuc: appname = '_nu'
-elif args.mito: appname = '_mt'
-else: appname = ''
+if args.out.endswith('/'): pass
+else: args.out = args.out+'/'
 
 ######################
 # ESTABLISHING PATHS #
 ######################
 
 liblist = set()
-libs = {}
-
-if args.dir != None:
-    allfiles = os.listdir(args.dir)
-    for each in allfiles:
-        if '_final.txt' in each:
-            library = each.split('_')[0]
-            liblist.add(library)
-elif args.infofile != None:
-    libinfo = open(args.infofile, 'r')
-    for lines in libinfo:
-        info = lines.strip().split()
-        liblist.add(info[0])
-        libs[info[0]] = info[2] 
+allfiles = os.listdir(args.reads)
+for each in allfiles:
+    if '_final.txt' in each:
+        library = each.split('_')[0]
+        liblist.add(library)
 
 evalue = args.evalue
 readhead = args.readhead
-ToTargets = args.ref
 liblist = list(liblist)
 
-
 for lib in liblist:
-    if args.infofile != None and args.dir == None:
-        proj = libs[lib]
-        reads1 = '%s%s/CleanedReads/%s_1_final.txt' % (args.homedir, proj, lib)
-        assembly = '%s/%s/FinalAssemblies/%s.fa.final' % (args.homedir, proj, lib)
-        OutDir = '%s/%s/References%s' % (args.homedir, proj, appname)
-    elif args.dir != None and args.infofile == None:
-        reads1 = '%s%s_1_final.txt' % (args.dir, lib)
-        OutDir = args.outdir
-        assembly = '%s%s.fa.final' % (args.assembly, lib)
+    reads1 = '%s%s_1_final.txt' % (args.reads, lib)
+    OutDir = args.out
+    assembly = '%s%s.fa.final' % (args.assembly, lib)
     print 'PROCESSING %s' % lib
 
     try: os.mkdir(OutDir)
-    except: OSError
-    pass
+    except OSError: pass
+    os.system('cp %s %s' % (args.ref, args.out))
+    ToTargets = args.out+args.ref.split('/')[-1]
 
 ###################
 # Initial Mapping #
@@ -313,4 +281,6 @@ for lib in liblist:
     os.system('gzip %s' % readsu)
     os.system("rm %s/readsout.fa %s/blast.out" % (OutDir, OutDir))
     os.system("rm %s/bowtie.sam" % (OutDir))
+    os.system("rm "+ToTargets)
     print('FINAL REFERENCE AND REPORT COMPLETED.')
+    

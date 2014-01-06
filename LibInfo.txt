@@ -1,0 +1,6 @@
+Library	P7_index	P5_index
+LIB1	1		1
+LIB2	2		1
+LIB3	3		1
+LIB4	1		2
+LIB5	2		2
